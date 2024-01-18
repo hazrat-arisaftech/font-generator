@@ -13,7 +13,12 @@ import { FontGenService } from './font-gen.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import path from 'path';
-
+// import fs from 'fs';
+import * as fs from 'fs';
+import { s3Client } from '../aws/aws-config';
+// import { S3 } from 'aws-sdk';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { S3 } from '@aws-sdk/client-s3';
 @Controller('font-gen')
 export class FontGenController {
   constructor(private readonly fontGen: FontGenService) {}
@@ -22,24 +27,56 @@ export class FontGenController {
   getFont(): string {
     return this.fontGen.getFont();
   }
+
+  @Get('/svgtottf')
+  convertFileType(): string {
+    return this.fontGen.convertFileType();
+  }
   @Post('/upload')
   @UseInterceptors(
-    FilesInterceptor('files', 3, {
+    FilesInterceptor('files', 62, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
+          let spl = file.originalname.split('.');
+          let date = new Date();
+          let hrs = date.getHours();
+          let mins = date.getMinutes();
+          let ms = date.getMilliseconds();
+          spl[spl.length - 2] += hrs + mins + ms;
+          console.log();
+          let newName = spl.join('.');
+          file.originalname = newName.replace(/ /g, '_');
           cb(null, `${file.originalname}`);
         },
       }),
     }),
   )
+  // async uploadMultipleFiles(@UploadedFiles() files) {
+  //   // const s3 = new S3();
+  //   for (let file of files) {
+  //     const params = {
+  //       Bucket: process.env.S3_BUCKET_NAME,
+  //       Key: `/uploads/${file.originalname}`,
+  //       Body: fs.createReadStream(file.path),
+  //     };
+
+  //     try {
+  //       console.log('over command');
+  //       const command = new PutObjectCommand(params);
+  //       const url = await getSignedUrl(s3Client, command);
+  //       return url;
+  //     } catch (err) {
+  //       console.log('Error uploading file:', err);
+  //     }
+  //   }
+  // }
   uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-    return this.fontGen.uploadFile();
+    return this.fontGen.uploadFile(files);
   }
 
   @Get('/getFile')
   getFile(): any {
-    // console.log(first)
-    return this.fontGen.getFile();
+    // return this.fontGen.getFile();
   }
 }

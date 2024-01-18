@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+
 export const FontSchema = new mongoose.Schema({
   id: {
     type: String,
@@ -7,7 +8,7 @@ export const FontSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fileName: {
+  file_name: {
     type: String,
     required: true,
   },

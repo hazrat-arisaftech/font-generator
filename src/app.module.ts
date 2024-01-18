@@ -6,6 +6,7 @@ import { FontGenModule } from './font-gen/font-gen.module';
 import { FontGenService } from './font-gen/font-gen.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Font } from './font-gen/model.font';
 @Module({
   imports: [
     FontGenModule,
@@ -13,6 +14,6 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRoot(process.env.MONGODB_URL),
   ],
   controllers: [AppController, FontGenController],
-  providers: [AppService, FontGenService],
+  providers: [AppService],
 })
 export class AppModule {}
