@@ -13,7 +13,6 @@ import { FontGenService } from './font-gen.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import path from 'path';
-// import fs from 'fs';
 import * as fs from 'fs';
 import { s3Client } from '../aws/aws-config';
 // import { S3 } from 'aws-sdk';
@@ -28,9 +27,9 @@ export class FontGenController {
     return this.fontGen.getFont();
   }
 
-  @Get('/svgtottf')
-  convertFileType(): string {
-    return this.fontGen.convertFileType();
+  @Post('/svgtottf')
+  convertFileType(@Body() body): string {
+    return this.fontGen.convertFileType(body);
   }
   @Post('/upload')
   @UseInterceptors(
@@ -71,8 +70,8 @@ export class FontGenController {
   //     }
   //   }
   // }
-  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-    return this.fontGen.uploadFile(files);
+  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>, @Body() body) {
+    return this.fontGen.uploadFile(files, body);
   }
 
   @Get('/getFile')

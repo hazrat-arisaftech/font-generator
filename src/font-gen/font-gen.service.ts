@@ -1,4 +1,10 @@
-import { Injectable, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Injectable,
+  Res,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -13,13 +19,15 @@ export class FontGenService {
     return 'Get your fonts here';
   }
 
-  uploadFile(files: any): string {
+  uploadFile(files: any, body: any): string {
     try {
       console.log('here ', files);
+      const uuid = Date.now();
       files.map((f: any) => {
         const file = {
           file_path: f.path,
           file_name: f.originalname,
+          uuid: uuid,
         };
         this.fontModel.create(file);
       });
@@ -31,14 +39,14 @@ export class FontGenService {
   getFile(): any {
     return this.fontModel.find();
   }
-  convertFileType(): string {
+  convertFileType(body: any): string {
     const svgtofont = require('svgtofont');
     const path = require('path');
 
     svgtofont({
       src: path.resolve(__dirname, '../../uploads'),
-      dist: path.resolve(__dirname, 'fonts'),
-      fontName: 'svgtofont',
+      // dist: path.resolve(__dirname, '/dunno'),
+      fontName: `${body.fileName}`,
       css: false,
       startUnicode: 0xea01,
       svgicons2svgfont: {
