@@ -40,6 +40,7 @@ export class AppModule implements NestModule {
       .exclude(
         { path: '/auth/signin', method: RequestMethod.POST },
         { path: '/auth/signup', method: RequestMethod.POST },
+        // { path: '/font-gen/getfiles', method: RequestMethod.POST },
       )
       .forRoutes('*');
   }
