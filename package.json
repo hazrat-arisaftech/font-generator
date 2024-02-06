@@ -28,6 +28,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mongoose": "^10.0.2",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.2.0",
     "archiver": "^6.0.1",
     "aws-sdk": "^2.1536.0",
     "bcrypt": "^5.1.1",

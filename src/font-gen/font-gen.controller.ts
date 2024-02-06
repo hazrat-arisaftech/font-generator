@@ -20,6 +20,9 @@ import { s3Client } from '../aws/aws-config';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { S3 } from '@aws-sdk/client-s3';
 import { Response } from 'express';
+import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+@ApiTags('Font generator')
 @Controller('font-gen')
 export class FontGenController {
   constructor(private readonly fontGen: FontGenService) {}
@@ -77,6 +80,8 @@ export class FontGenController {
   }
 
   @Get('/allfiles')
+  @ApiOperation({ summary: 'Get all files' })
+  @ApiCookieAuth('Authorization')
   getFiles(@Body() body: any): Promise<any> {
     return this.fontGen.getFiles(body.user_id);
   }

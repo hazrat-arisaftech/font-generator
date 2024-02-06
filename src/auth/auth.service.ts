@@ -21,9 +21,7 @@ export class AuthService {
       console.log('Exist');
       return res.status(403).json('User already exists');
     }
-    // res.status(403).json('User already exists');
     const saltOrRounds = 10;
-    // const password = 'random_password';
     const hash = await bcrypt.hash(password, saltOrRounds);
     await this.userModel.create({ email, password: hash });
     return res.status(200).json('User created');
@@ -41,6 +39,5 @@ export class AuthService {
       })
       .status(200)
       .json('Logged in');
-    // return res.status(200).json('Logged in');
   }
 }

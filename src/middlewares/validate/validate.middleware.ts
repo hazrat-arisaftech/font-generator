@@ -12,7 +12,7 @@ export class ValidateMiddleware implements NestMiddleware {
       process.env.JWT_SECRET,
       function (err: any, user: any) {
         if (!err) {
-          console.log('trimmed token', trimmedToken);
+          // console.log('trimmed token', trimmedToken);
           console.log(err);
           console.log('verified user ', user);
           next();
@@ -22,7 +22,5 @@ export class ValidateMiddleware implements NestMiddleware {
         }
       },
     );
-    // console.log('Requests', req);
-    // next();
   }
 }
