@@ -38,6 +38,6 @@ export class AuthService {
         httpOnly: true,
       })
       .status(200)
-      .json('Logged in');
+      .json({ token });
   }
 }
